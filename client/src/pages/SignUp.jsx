@@ -1,11 +1,13 @@
-import { Alert, Button, Label, TextInput } from "flowbite-react";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({});
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -19,6 +21,9 @@ const SignUp = () => {
         }
 
         try {
+            setLoading(true);
+            setErrorMessage(null);
+
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -27,10 +32,16 @@ const SignUp = () => {
 
             const data = await res.json();
             if (data.success === false) {
+                setLoading(false);
                 return setErrorMessage(data.message);
+            }
+
+            if (res.ok) {
+                navigate("/sign-in");
             }
         } catch (error) {
             setErrorMessage(error.message);
+            setLoading(false);
         }
     };
 
@@ -110,8 +121,19 @@ const SignUp = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <Button gradientDuoTone="purpleToPink" type="submit">
-                            Sign Up
+                        <Button
+                            gradientDuoTone="purpleToPink"
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <Spinner size="sm" />{" "}
+                                    <span className="pl-3">Loading...</span>
+                                </>
+                            ) : (
+                                "Sign Up"
+                            )}
                         </Button>
                     </form>
                     <div className="flex gap-2 text-2 mt-5">
