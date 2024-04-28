@@ -1,7 +1,39 @@
-import { Button, Label, TextInput } from "flowbite-react";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
+    const [formData, setFormData] = useState({});
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!formData.username || !formData.email || !formData.password) {
+            return setErrorMessage("All fields are required");
+        }
+
+        try {
+            const res = await fetch("/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+            if (data.success === false) {
+                return setErrorMessage(data.message);
+            }
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
+    };
+
     return (
         <div className="min-h-screen mt-20">
             <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -47,13 +79,17 @@ const SignUp = () => {
                 </div>
                 {/* RIGHT SIDE */}
                 <div className="flex-1">
-                    <form className="flex flex-col gap-4">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="flex flex-col gap-4"
+                    >
                         <div>
                             <Label value="Username" />
                             <TextInput
                                 type="text"
                                 placeholder="YourUsername"
                                 id="username"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -62,6 +98,7 @@ const SignUp = () => {
                                 type="email"
                                 placeholder="your.email@address.com"
                                 id="email"
+                                onChange={handleChange}
                             />
                         </div>
                         <div>
@@ -70,6 +107,7 @@ const SignUp = () => {
                                 type="password"
                                 placeholder="Password"
                                 id="password"
+                                onChange={handleChange}
                             />
                         </div>
                         <Button gradientDuoTone="purpleToPink" type="submit">
@@ -85,6 +123,11 @@ const SignUp = () => {
                             Sign In
                         </Link>
                     </div>
+                    {errorMessage && (
+                        <Alert className="mt-5 items-center" color="failure">
+                            {errorMessage}
+                        </Alert>
+                    )}
                 </div>
             </div>
         </div>
