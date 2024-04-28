@@ -45,7 +45,7 @@ export const signin = async (req, res, next) => {
         // Check user existance
         const validUser = await User.findOne({ email });
         if (!validUser) {
-            next(errorHandler(400, "Invalid Credentials"));
+            return next(errorHandler(400, "Invalid Credentials"));
         }
 
         // matching passwords
@@ -54,8 +54,22 @@ export const signin = async (req, res, next) => {
             validUser.password
         );
         if (!validPassword) {
-            next(errorHandler(400, "Invalid Credentials"));
+            return next(errorHandler(400, "Invalid Credentials"));
         }
+
+        const token = jwt.sign(
+            { id: validUser._id },
+            process.env.JWT_SECRET_KEY
+        );
+
+        // Separate password from the other. Then, retufrn 'rest'
+        const { password: pw, ...rest } = validUser._doc;
+
+        res.status(200)
+            .cookie("access_token", token, {
+                httpOnly: true,
+            })
+            .json(rest); // Use 'rest' instead of all info that include password
     } catch (error) {
         next(error);
     }
