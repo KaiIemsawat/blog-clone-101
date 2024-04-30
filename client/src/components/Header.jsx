@@ -39,7 +39,7 @@ const Header = () => {
                 >
                     Zukkii's
                 </span>{" "}
-                <span className="text-stone-600">Blog</span>
+                <span className="text-stone-600 dark:text-stone-200">Blog</span>
             </Link>
             <form>
                 <TextInput

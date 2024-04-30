@@ -79,7 +79,9 @@ const SignIn = () => {
                         >
                             Zukkii's
                         </span>{" "}
-                        <span className="text-stone-600">Blog</span>
+                        <span className="text-stone-600 dark:text-stone-200">
+                            Blog
+                        </span>
                     </Link>
                     <p className="text-sm mt-5">
                         Lorem Ipsum is simply dummy text of the printing and

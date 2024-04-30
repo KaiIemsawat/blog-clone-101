@@ -39,7 +39,9 @@ const FooterComponent = () => {
                             >
                                 Zukkii's
                             </span>{" "}
-                            <span className="text-stone-600">Blog</span>
+                            <span className="text-stone-600 dark:text-stone-200">
+                                Blog
+                            </span>
                         </Link>
                     </div>
                     <div className="grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6">
