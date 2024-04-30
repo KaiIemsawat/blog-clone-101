@@ -49,7 +49,7 @@ const Header = () => {
                     className="hidden lg:inline"
                 />
             </form>
-            <Button className="w-12 h-10" color="gray">
+            <Button className="w-12 h-10 lg:hidden" color="gray">
                 <AiOutlineSearch />
             </Button>
             <div className="flex gap-2 md:order-2">
