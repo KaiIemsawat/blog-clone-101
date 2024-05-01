@@ -23,6 +23,7 @@ const DashSidebar = () => {
                             icon={HiUser}
                             label={"User"}
                             labelColor="dark"
+                            as="div" // without this, browser will consider it as <a><a></a></a> which causes error
                         >
                             Profile
                         </Sidebar.Item>
