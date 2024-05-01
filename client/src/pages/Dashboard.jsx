@@ -14,9 +14,11 @@ const Dashboard = () => {
         setTab(tabFromUrl);
     }, [location.search]);
     return (
-        <div>
-            {/* SIDE BAR */}
-            <DashSidebar />
+        <div className="min-h-screen flex flex-col md:flex-row">
+            <div>
+                {/* SIDE BAR */}
+                <DashSidebar />
+            </div>
             {/* PROFILE */}
             {tab === "profile" && <DashProfile />}
         </div>
