@@ -7,6 +7,8 @@ import {
     ref,
     getDownloadURL,
 } from "firebase/storage";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 import { app } from "../firebase";
 
@@ -49,6 +51,7 @@ const DashProfile = () => {
             }
         }
         */
+        setImageFileUploadError(null);
         const storage = getStorage(app);
         const fileName = new Date().getTime() + imageFile.name;
         const storageRef = ref(storage, fileName);
@@ -64,6 +67,9 @@ const DashProfile = () => {
                 setImageFileUploadError(
                     "Could not upload image (File must be smaller than 2MB)"
                 );
+                setImageFileUploadingProgress(null);
+                setImageFile(null);
+                setImageFileUrl(null);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -86,12 +92,33 @@ const DashProfile = () => {
                 />
                 <div
                     onClick={() => filePickerRef.current.click()}
-                    className="w-32 h-32 self-center cursor-pointer shadow-md hover:shadow-xl duration-700 rounded-full "
+                    className="relative w-32 h-32 self-center cursor-pointer shadow-md hover:shadow-xl duration-700 rounded-full "
                 >
+                    {imageFileUploadingProgress && (
+                        <CircularProgressbar
+                            value={imageFileUploadingProgress || 0}
+                            text={`${imageFileUploadingProgress}%`}
+                            strokeWidth={5}
+                            styles={{
+                                root: {
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                },
+                                path: {
+                                    stroke: `rgba(62, 152, 199, ${
+                                        imageFileUploadingProgress / 100
+                                    })`,
+                                },
+                            }}
+                        />
+                    )}
                     <img
                         src={imageFileUrl || currentUser.profilePicture}
                         alt="user profile"
-                        className="
+                        className={`
                             rounded-full
                             w-full
                             h-full
@@ -100,7 +127,12 @@ const DashProfile = () => {
                             border-slate-300 hover:border-slate-400
                             duration-700
                             dark:border-pink-100 hover:dark:border-pink-400
-                        "
+                            ${
+                                imageFileUploadingProgress &&
+                                imageFileUploadingProgress < 100 &&
+                                "opacity-60"
+                            }
+                        `}
                     />
                 </div>
                 {imageFileUploadError && (
