@@ -154,7 +154,7 @@ const DashProfile = () => {
                     {imageFileUploadingProgress && (
                         <CircularProgressbar
                             value={imageFileUploadingProgress || 0}
-                            text={`${imageFileUploadingProgress}%`}
+                            // text={`${imageFileUploadingProgress}%`}
                             strokeWidth={5}
                             styles={{
                                 root: {
@@ -165,7 +165,7 @@ const DashProfile = () => {
                                     left: 0,
                                 },
                                 path: {
-                                    stroke: `rgba(62, 152, 199, ${
+                                    stroke: `rgba(54, 172, 199, ${
                                         imageFileUploadingProgress / 100
                                     })`,
                                 },
