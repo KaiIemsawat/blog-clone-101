@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-import userRoute from "./routes/user.route.js";
-import authRoute from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 import { statusHandler } from "./middleware/status.js";
 
 dotenv.config();
@@ -23,7 +24,8 @@ app.listen(port, () => {
     console.log(`SERVER'S LAUNCHED 🚀 ON PORT :: ${port}`);
 });
 
-app.use("/api/user", userRoute);
-app.use("/api/auth", authRoute);
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 app.use(statusHandler);
