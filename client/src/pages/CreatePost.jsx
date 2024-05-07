@@ -1,4 +1,4 @@
-import { Button, FileInput, Select, TextInput } from "flowbite-react";
+import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import {
@@ -108,6 +108,18 @@ const CreatePost = () => {
                         )}
                     </Button>
                 </div>
+                {imageUploadError && (
+                    <Alert color="failure" className="items-center">
+                        {imageUploadError}
+                    </Alert>
+                )}
+                {formData.image && (
+                    <img
+                        src={formData.image}
+                        alt="upload image"
+                        className="w-full h-72 object-cover"
+                    />
+                )}
                 <ReactQuill
                     theme="snow"
                     placeholder="Write something..."
