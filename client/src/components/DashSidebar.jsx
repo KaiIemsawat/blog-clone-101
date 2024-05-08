@@ -1,14 +1,15 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiLogout, HiUser } from "react-icons/hi";
+import { HiDocumentText, HiLogout, HiUser } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { signoutSuccess } from "../redux/user/userSlice";
 
 const DashSidebar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
+    const { currentUser } = useSelector((state) => state.user);
 
     const [tab, setTab] = useState();
 
@@ -43,14 +44,24 @@ const DashSidebar = () => {
                         <Sidebar.Item
                             active={tab === "profile"}
                             icon={HiUser}
-                            label={"User"}
+                            label={currentUser.isAdmin ? "Admin" : "User"}
                             labelColor="dark"
                             as="div" // without this, browser will consider it as <a><a></a></a> which causes error
                         >
                             Profile
                         </Sidebar.Item>
                     </Link>
-
+                    {currentUser.isAdmin && (
+                        <Link to="/dashboard?tab=posts">
+                            <Sidebar.Item
+                                active={tab === "posts"}
+                                icon={HiDocumentText}
+                                as="div"
+                            >
+                                Post
+                            </Sidebar.Item>
+                        </Link>
+                    )}
                     <Sidebar.Item
                         onClick={handleSignout}
                         icon={HiLogout}
