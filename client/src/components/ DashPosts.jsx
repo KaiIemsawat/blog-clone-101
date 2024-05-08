@@ -1,5 +1,7 @@
+import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const DashPosts = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -26,6 +28,79 @@ const DashPosts = () => {
             fetchPosts();
         }
     }, [currentUser._id]);
-    return <div> DashPosts</div>;
+    return (
+        <div
+            className="
+                table-auto
+                overflow-x-scroll
+                md:mx-auto p-3 scrollbar
+                scrollbar-track-stone-400
+                scrollbar-thumb-stone-500
+                dark:scrollbar-track-stone-700
+                dark:scrollbar-thumb-stone-900
+            "
+        >
+            {currentUser.isAdmin && userPosts.length > 0 ? (
+                <>
+                    <Table hoverable className="shadow-md">
+                        <Table.Head>
+                            <Table.HeadCell>Date Update</Table.HeadCell>
+                            <Table.HeadCell>Post Image</Table.HeadCell>
+                            <Table.HeadCell>Post Title</Table.HeadCell>
+                            <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Delete</Table.HeadCell>
+                            <Table.HeadCell>
+                                <span>Edit</span>
+                            </Table.HeadCell>
+                        </Table.Head>
+                        {userPosts.map((post) => (
+                            <Table.Body className="divide-y">
+                                <Table.Row className="bg-stone-200 dark:bg-stone-800">
+                                    <Table.Cell>
+                                        {new Date(
+                                            post.updatedAt
+                                        ).toLocaleDateString()}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Link to={`/post/${post.slug}`}>
+                                            <img
+                                                src={post.image}
+                                                alt={post.title}
+                                                className="w-20 h-10 object-cover bg-slate-500"
+                                            />
+                                        </Link>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Link
+                                            to={`/post/${post.slug}`}
+                                            className="font-medium text-slate-800 hover:text-slate-600 dark:text-slate-50 dark:hover:text-slate-300 hover:underline duration-300"
+                                        >
+                                            {post.title}
+                                        </Link>
+                                    </Table.Cell>
+                                    <Table.Cell>{post.category}</Table.Cell>
+                                    <Table.Cell>
+                                        <span className="text-red-500 hover:text-red-300 dark:hover:text-red-700 duration-300 hover:underline cursor-pointer font-semibold">
+                                            Delete
+                                        </span>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Link
+                                            className="text-amber-500 hover:text-amber-300 duration-300 hover:underline cursor-pointer font-semibold"
+                                            to={`/update-post/${post._id}`}
+                                        >
+                                            <span>Edit</span>
+                                        </Link>
+                                    </Table.Cell>
+                                </Table.Row>
+                            </Table.Body>
+                        ))}
+                    </Table>
+                </>
+            ) : (
+                <p>There is no post...</p>
+            )}
+        </div>
+    );
 };
 export default DashPosts;
