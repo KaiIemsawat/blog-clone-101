@@ -2,23 +2,13 @@ import { Button, Modal, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import {
-    updateStart,
-    updateSuccess,
-    updateFailure,
-    deleteUserStart,
-    deleteUserSuccess,
-    deleteUserFailure,
-    signoutSuccess,
-} from "../redux/user/userSlice";
+import { deleteUserStart, deleteUserSuccess } from "../redux/user/userSlice";
 
 const DashUsers = () => {
     const { currentUser } = useSelector((state) => state.user);
-    console.log(currentUser._id);
-    const navigate = useNavigate();
+
     const dispatch = useDispatch();
 
     const [users, setUsers] = useState([]);
