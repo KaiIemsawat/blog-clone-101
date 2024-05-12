@@ -2,11 +2,24 @@ import { Button, Modal, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import {
+    updateStart,
+    updateSuccess,
+    updateFailure,
+    deleteUserStart,
+    deleteUserSuccess,
+    deleteUserFailure,
+    signoutSuccess,
+} from "../redux/user/userSlice";
 
 const DashUsers = () => {
     const { currentUser } = useSelector((state) => state.user);
+    console.log(currentUser._id);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [users, setUsers] = useState([]);
     const [showMore, setShowMore] = useState(true);
@@ -53,14 +66,19 @@ const DashUsers = () => {
 
     const handleDeleteUser = async () => {
         try {
+            dispatch(deleteUserStart());
             const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
                 method: "DELETE",
             });
             const data = await res.json();
             if (res.ok) {
-                setUsers((prev) =>
-                    prev.filter((user) => user._id !== userIdToDelete)
-                );
+                if (currentUser._id === userIdToDelete) {
+                    dispatch(deleteUserSuccess(data));
+                } else {
+                    setUsers((prev) =>
+                        prev.filter((user) => user._id !== userIdToDelete)
+                    );
+                }
                 setShowModal(false);
             } else {
                 console.log(data.message);
