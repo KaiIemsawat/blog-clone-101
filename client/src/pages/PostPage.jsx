@@ -1,6 +1,6 @@
-import { Spinner } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const PostPage = () => {
     const { postSlug } = useParams();
@@ -38,6 +38,32 @@ const PostPage = () => {
             </div>
         );
     }
-    return <div>PostPage</div>;
+
+    return post ? (
+        <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
+            <h1 className="text-3xl mt-10 p-3 text-center max-w-2xl mx-auto font-serif lg:text-4xl">
+                {post.title}
+            </h1>
+            <Link
+                to={`/searchk?category=${post.category}`}
+                className="self-center mt-5"
+            >
+                <Button color="gray" pill size="xs">
+                    {post.category}
+                </Button>
+            </Link>
+            <img
+                src={post.image}
+                alt={post.title}
+                className="mt-10 p-3 m-h-[600px] w-full object-cover"
+            />
+            <div className="flex justify-between p-3 border-b border-slate-500 w-full mx-auto text-xs font-thin text-stone-700 dark:text-stone-300">
+                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                <span>{(post.content.length / 1000).toFixed(0)} mins read</span>
+            </div>
+        </main>
+    ) : (
+        <div>No post found</div>
+    );
 };
 export default PostPage;
