@@ -61,6 +61,10 @@ const PostPage = () => {
                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                 <span>{(post.content.length / 1000).toFixed(0)} mins read</span>
             </div>
+            <div
+                className="p-3 w-full mt-4 post-content"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+            ></div>
         </main>
     ) : (
         <div>No post found</div>

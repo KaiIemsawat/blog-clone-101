@@ -23,6 +23,8 @@ const UpdatePost = () => {
     const [publishError, setPublishError] = useState(null);
     const { postId } = useParams();
 
+    console.log(postId);
+
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
 
@@ -91,7 +93,7 @@ const UpdatePost = () => {
         e.preventDefault();
         try {
             const res = await fetch(
-                `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+                `/api/post/updatepost/${postId}/${currentUser._id}`,
                 {
                     method: "PUT",
                     headers: {
