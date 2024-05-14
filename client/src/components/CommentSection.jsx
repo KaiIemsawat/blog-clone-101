@@ -1,4 +1,4 @@
-import { Button, TextInput, Textarea } from "flowbite-react";
+import { Alert, Button, TextInput, Textarea } from "flowbite-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,8 +6,35 @@ import { Link } from "react-router-dom";
 const CommentSection = ({ postId }) => {
     const { currentUser } = useSelector((state) => state.user);
     const [comment, setComment] = useState("");
+    const [commentError, setCommentError] = useState(null);
 
-    const handleSubmit = () => {};
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (comment.length > 600) {
+            return;
+        }
+        try {
+            const res = await fetch("/api/comment/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: comment,
+                    postId,
+                    userId: currentUser._id,
+                }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setComment("");
+                setCommentError(null);
+            }
+        } catch (error) {
+            setCommentError(error.message);
+        }
+    };
 
     return (
         <div className="max-w-2xl mx-auto flex flex-col items-center p-3">
@@ -57,6 +84,14 @@ const CommentSection = ({ postId }) => {
                                 Submit comment
                             </Button>
                         </div>
+                        {commentError && (
+                            <Alert
+                                color="failure"
+                                className="mt-5 items-center"
+                            >
+                                {commentError}
+                            </Alert>
+                        )}
                     </form>
                 </>
             ) : (

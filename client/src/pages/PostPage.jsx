@@ -70,7 +70,7 @@ const PostPage = () => {
             <div className="max-4xl mx-auto w-full">
                 <CallToAction />
             </div>
-            <CommentSection postid={post._id} />
+            <CommentSection postId={post._id} />
         </main>
     ) : (
         <div>No post found</div>
