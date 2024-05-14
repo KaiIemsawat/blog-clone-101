@@ -21,21 +21,26 @@ const Comment = ({ comment }) => {
         getUser();
     }, [comment]);
     return (
-        <div>
-            <div className="">
+        <div className="flex p-4 border-b border-stone-300 dark:border-stone-700 text-sm">
+            <div className="flex-shrink-0 mr-3">
                 <img
                     src={user.profilePicture}
                     alt={`${user.username} profile image`}
                     className="w-10 h-10 rounded-full bg-slate-200"
                 />
             </div>
-            <div className="">
-                <div>
-                    <span className="font-bold mr-1 text-xs truncate">
+            <div className="flex-1">
+                <div className="flex items-end mb-1">
+                    <span className="font-bold mr-1 truncate">
                         {user ? `@${user.username}` : "anonymous user"}
                     </span>
-                    <span>{moment(comment.createdAt).fromNow()}</span>
+                    <span className="font-thin dark:text-stone-300 text-stone-900">
+                        {`| ${moment(comment.createdAt).fromNow()}`}
+                    </span>
                 </div>
+                <p className="text-stone-600 dark:text-stone-400 pb-2">
+                    {comment.content}
+                </p>
             </div>
         </div>
     );

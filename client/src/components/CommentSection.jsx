@@ -35,6 +35,7 @@ const CommentSection = ({ postId }) => {
             if (res.ok) {
                 setComment("");
                 setCommentError(null);
+                setComments([data, ...comments]);
             }
         } catch (error) {
             setCommentError(error.message);
@@ -57,7 +58,7 @@ const CommentSection = ({ postId }) => {
     }, [postId]);
 
     return (
-        <div className="max-w-2xl mx-auto flex flex-col items-center p-3">
+        <div className="max-w-2xl w-full mx-auto flex flex-col p-3">
             {currentUser ? (
                 <>
                     <div className="flex items-center gap-1 my-5 text-slate-500 text-sm font-thin">
