@@ -1,12 +1,17 @@
 import { Alert, Button, TextInput, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
     const { currentUser } = useSelector((state) => state.user);
     const [comment, setComment] = useState("");
+    const [comments, setComments] = useState([]);
     const [commentError, setCommentError] = useState(null);
+
+    console.log(comments);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,6 +40,21 @@ const CommentSection = ({ postId }) => {
             setCommentError(error.message);
         }
     };
+
+    useEffect(() => {
+        const getComments = async () => {
+            try {
+                const res = await fetch(
+                    `/api/comment/getPostComments/${postId}`
+                );
+                const data = await res.json();
+                setComments(data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+        getComments();
+    }, [postId]);
 
     return (
         <div className="max-w-2xl mx-auto flex flex-col items-center p-3">
@@ -106,6 +126,27 @@ const CommentSection = ({ postId }) => {
                         Sign in
                     </Link>
                 </div>
+            )}
+            {comments.length === 0 ? (
+                <p className="text-sm my-5 text-stone-500">
+                    No comment for this post yet
+                </p>
+            ) : (
+                <>
+                    <div className="text-sm my-5 flex items-center gap-1">
+                        <p className="text-stone-600 dark:text-stone-200">
+                            Comments
+                        </p>
+                        <div className="bg-slate-200 dark:bg-slate-600 px-1 rounded-md">
+                            <p className="text-stone-500 dark:text-stone-300 font-semibold">
+                                {comments.length}
+                            </p>
+                        </div>
+                    </div>
+                    {comments.map((comment) => (
+                        <Comment key={comment._id} comment={comment} />
+                    ))}
+                </>
             )}
         </div>
     );
