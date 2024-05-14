@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { useEffect, useState } from "react";
 
 const Comment = ({ comment }) => {
@@ -19,6 +20,24 @@ const Comment = ({ comment }) => {
         };
         getUser();
     }, [comment]);
-    return <div>Comment</div>;
+    return (
+        <div>
+            <div className="">
+                <img
+                    src={user.profilePicture}
+                    alt={`${user.username} profile image`}
+                    className="w-10 h-10 rounded-full bg-slate-200"
+                />
+            </div>
+            <div className="">
+                <div>
+                    <span className="font-bold mr-1 text-xs truncate">
+                        {user ? `@${user.username}` : "anonymous user"}
+                    </span>
+                    <span>{moment(comment.createdAt).fromNow()}</span>
+                </div>
+            </div>
+        </div>
+    );
 };
 export default Comment;
