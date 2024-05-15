@@ -1,10 +1,13 @@
 import moment from "moment/moment";
 import { useEffect, useState } from "react";
+import { FaThumbsUp } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, onLike }) => {
     const [user, setUser] = useState({});
 
-    console.log(user);
+    const { currentUser } = useSelector((state) => state.user);
+
     useEffect(() => {
         const getUser = async () => {
             const res = await fetch(`/api/user/${comment.userId}`);
@@ -20,6 +23,7 @@ const Comment = ({ comment }) => {
         };
         getUser();
     }, [comment]);
+
     return (
         <div className="flex p-4 border-b border-stone-300 dark:border-stone-700 text-sm">
             <div className="flex-shrink-0 mr-3">
@@ -41,6 +45,42 @@ const Comment = ({ comment }) => {
                 <p className="text-stone-600 dark:text-stone-400 pb-2">
                     {comment.content}
                 </p>
+                <div
+                    className="
+                        flex
+                        items-center
+                        gap-2
+                        pt-2
+                        mt-2
+                        text-xs
+                        border-t-4
+                        border-stone-200
+                        dark:border-stone-700
+                        border-dotted
+                        max-w-[128px]
+                    "
+                    // Note : edit max-w-[128px] later
+                >
+                    <button
+                        type="button"
+                        onClick={() => onLike(comment._id)}
+                        className={`text-stone-400 dark:text-stone-600 hover:text-blue-300 duration-300 ${
+                            currentUser &&
+                            comment.likes.includes(currentUser._id) &&
+                            "!text-blue-500"
+                        }`}
+                    >
+                        <FaThumbsUp className="text-xs" />
+                    </button>
+                    <p className="text-stone-600 dark:text-stone-400">
+                        {comment.numberOfLikes > 0 &&
+                            comment.numberOfLikes +
+                                " " +
+                                (comment.numberOfLikes === 1
+                                    ? "like"
+                                    : "likes")}
+                    </p>
+                </div>
             </div>
         </div>
     );
