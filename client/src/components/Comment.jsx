@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
-const Comment = ({ comment, onLike, onEdit }) => {
+const Comment = ({ comment, onLike, onEdit, onDelete }) => {
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(comment.content);
@@ -141,13 +141,24 @@ const Comment = ({ comment, onLike, onEdit }) => {
                             {currentUser &&
                                 (currentUser._id === comment.userId ||
                                     currentUser.isAdmin) && (
-                                    <button
-                                        type="button"
-                                        onClick={handleEdit}
-                                        className="text-stone-400 dark:text-stone-600 hover:text-amber-500 dark:hover:text-amber-500 duration-300"
-                                    >
-                                        Edit
-                                    </button>
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={handleEdit}
+                                            className="text-stone-400 dark:text-stone-600 hover:text-amber-500 dark:hover:text-amber-500 duration-300"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                onDelete(comment._id)
+                                            }
+                                            className="text-stone-400 dark:text-stone-600 hover:text-red-500 dark:hover:text-red-500 duration-300"
+                                        >
+                                            Delete
+                                        </button>
+                                    </>
                                 )}
                         </div>
                     </>
