@@ -4,12 +4,8 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteUserStart, deleteUserSuccess } from "../redux/user/userSlice";
-
 const DashComments = () => {
     const { currentUser } = useSelector((state) => state.user);
-
-    const dispatch = useDispatch();
 
     const [comments, setComments] = useState([]);
     const [showMore, setShowMore] = useState(true);
@@ -55,25 +51,19 @@ const DashComments = () => {
     };
 
     const handleDeleteComment = async () => {
+        setShowModal(false);
         try {
-            dispatch(deleteCommentStart());
             const res = await fetch(
-                `/api/comment/delete/${commentIdToDelete}`,
+                `/api/comment/deleteComment/${commentIdToDelete}`,
                 {
                     method: "DELETE",
                 }
             );
             const data = await res.json();
             if (res.ok) {
-                if (currentComment._id === commentIdToDelete) {
-                    dispatch(deleteCommentSuccess(data));
-                } else {
-                    setComments((prev) =>
-                        prev.filter(
-                            (comment) => comment._id !== commentIdToDelete
-                        )
-                    );
-                }
+                setComments((prev) =>
+                    prev.filter((comment) => comment._id !== commentIdToDelete)
+                );
                 setShowModal(false);
             } else {
                 console.log(data.message);
