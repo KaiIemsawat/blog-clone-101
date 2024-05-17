@@ -12,7 +12,9 @@ const PostCard = ({ post }) => {
                 border-slate-300
                 dark:border-slate-700
                 rounded-lg
-                h-[400px]
+                h-[300px]
+                sm:h-[310px]
+                md:h-[380px]
                 overflow-hidden
                 sm:w-[430px]
                 hover:bg-orange-50
@@ -38,7 +40,7 @@ const PostCard = ({ post }) => {
                 />
             </Link>
             <div className="p-3 flex flex-col">
-                <p className="text-xl font-semibold line-clamp-2">
+                <p className="text-xl font-semibold line-clamp-1">
                     {post.title}
                 </p>
                 <span className="font-thin text-stone-600 dark:text-stone-400">
