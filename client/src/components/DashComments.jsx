@@ -1,27 +1,29 @@
 import { Button, Modal, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const DashPosts = () => {
+import { deleteUserStart, deleteUserSuccess } from "../redux/user/userSlice";
+
+const DashComments = () => {
     const { currentUser } = useSelector((state) => state.user);
 
-    const [userPosts, setUserPosts] = useState([]);
+    const dispatch = useDispatch();
+
+    const [comments, setComments] = useState([]);
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [postIdToDelete, setPostIdToDelete] = useState("");
+    const [commentIdToDelete, setCommentIdToDelete] = useState("");
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchComments = async () => {
             try {
-                const res = await fetch(
-                    `/api/post/getposts?userId=${currentUser._id}`
-                );
+                const res = await fetch(`/api/comment/getcomments`);
                 const data = await res.json();
                 if (res.ok) {
-                    setUserPosts(data.posts);
-                    if (data.posts.length < 9) {
+                    setComments(data.comments);
+                    if (data.comments.length < 9) {
                         setShowMore(false);
                     }
                 }
@@ -30,20 +32,20 @@ const DashPosts = () => {
             }
         };
         if (currentUser.isAdmin) {
-            fetchPosts();
+            fetchComments();
         }
     }, [currentUser._id]);
 
     const handleShowMore = async () => {
-        const startIndex = userPosts.length;
+        const startIndex = comments.length;
         try {
             const res = await fetch(
-                `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+                `/api/comment/getcomments?startIndex=${startIndex}`
             );
             const data = await res.json();
             if (res.ok) {
-                setUserPosts((prev) => [...prev, ...data.posts]);
-                if (data.posts.length < 9) {
+                setComments((prev) => [...prev, ...data.comments]);
+                if (data.comments.length < 9) {
                     setShowMore(false);
                 }
             }
@@ -52,22 +54,29 @@ const DashPosts = () => {
         }
     };
 
-    const handleDeletePost = async () => {
-        setShowModal(false);
+    const handleDeleteComment = async () => {
         try {
+            dispatch(deleteCommentStart());
             const res = await fetch(
-                `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+                `/api/comment/delete/${commentIdToDelete}`,
                 {
                     method: "DELETE",
                 }
             );
             const data = await res.json();
-            if (!res.ok) {
-                console.log(data.message);
+            if (res.ok) {
+                if (currentComment._id === commentIdToDelete) {
+                    dispatch(deleteCommentSuccess(data));
+                } else {
+                    setComments((prev) =>
+                        prev.filter(
+                            (comment) => comment._id !== commentIdToDelete
+                        )
+                    );
+                }
+                setShowModal(false);
             } else {
-                setUserPosts((prev) =>
-                    prev.filter((post) => post._id !== postIdToDelete)
-                );
+                console.log(data.message);
             }
         } catch (error) {
             console.log(error.message);
@@ -86,63 +95,47 @@ const DashPosts = () => {
                 dark:scrollbar-thumb-stone-900
             "
         >
-            {currentUser.isAdmin && userPosts.length > 0 ? (
+            {currentUser.isAdmin && comments.length > 0 ? (
                 <>
                     <Table hoverable className="shadow-md">
                         <Table.Head>
-                            <Table.HeadCell>Date Update</Table.HeadCell>
-                            <Table.HeadCell>Post Image</Table.HeadCell>
-                            <Table.HeadCell>Post Title</Table.HeadCell>
-                            <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Date Updated</Table.HeadCell>
+                            <Table.HeadCell>Comment Content</Table.HeadCell>
+                            <Table.HeadCell>Number of likes</Table.HeadCell>
+                            <Table.HeadCell>Post ID</Table.HeadCell>
+                            <Table.HeadCell>User ID</Table.HeadCell>
                             <Table.HeadCell>Delete</Table.HeadCell>
-                            <Table.HeadCell>
-                                <span>Edit</span>
-                            </Table.HeadCell>
                         </Table.Head>
-                        {userPosts.map((post) => (
-                            <Table.Body key={post.slug} className="divide-y">
+                        {comments.map((comment) => (
+                            <Table.Body key={comment._id} className="divide-y">
                                 <Table.Row className="bg-stone-200 dark:bg-stone-800">
                                     <Table.Cell>
                                         {new Date(
-                                            post.updatedAt
+                                            comment.updatedAt
                                         ).toLocaleDateString()}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <Link to={`/post/${post.slug}`}>
-                                            <img
-                                                src={post.image}
-                                                alt={post.title}
-                                                className="w-20 h-10 object-cover bg-slate-500"
-                                            />
-                                        </Link>
+                                        <p className="line-clamp-1">
+                                            {comment.content}
+                                        </p>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <Link
-                                            to={`/post/${post.slug}`}
-                                            className="font-medium text-slate-800 hover:text-slate-600 dark:text-slate-50 dark:hover:text-slate-300 hover:underline duration-300 line-clamp-1"
-                                        >
-                                            {post.title}
-                                        </Link>
+                                        {comment.numberOfLikes}
                                     </Table.Cell>
-                                    <Table.Cell>{post.category}</Table.Cell>
+                                    <Table.Cell>{comment.postId}</Table.Cell>
+                                    <Table.Cell>{comment.userId}</Table.Cell>
                                     <Table.Cell>
                                         <span
                                             onClick={() => {
                                                 setShowModal(true);
-                                                setPostIdToDelete(post._id);
+                                                setCommentIdToDelete(
+                                                    comment._id
+                                                );
                                             }}
                                             className="text-red-500 hover:text-red-300 dark:hover:text-red-700 duration-300 hover:underline cursor-pointer font-semibold"
                                         >
                                             Delete
                                         </span>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Link
-                                            className="text-amber-500 hover:text-amber-300 duration-300 hover:underline cursor-pointer font-semibold"
-                                            to={`/update-post/${post._id}`}
-                                        >
-                                            <span>Edit</span>
-                                        </Link>
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>
@@ -158,7 +151,7 @@ const DashPosts = () => {
                     )}
                 </>
             ) : (
-                <p>There is no post...</p>
+                <p>There is no comment...</p>
             )}
             <Modal
                 show={showModal}
@@ -171,11 +164,14 @@ const DashPosts = () => {
                     <div className="text-center">
                         <HiOutlineExclamationCircle className="h-14 w-14 text-slate-500 dark:text-slate-200 mb-4 mx-auto" />
                         <h3 className="mb-5 text-lg text-slate-500 dark:text-slate-200">
-                            Confirm deleting the post
+                            Confirm deleting this user
                         </h3>
                         <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={handleDeletePost}>
-                                Yes, delete the account
+                            <Button
+                                color="failure"
+                                onClick={handleDeleteComment}
+                            >
+                                Yes, delete the comment
                             </Button>
                             <Button
                                 color="gray"
@@ -190,4 +186,4 @@ const DashPosts = () => {
         </div>
     );
 };
-export default DashPosts;
+export default DashComments;
