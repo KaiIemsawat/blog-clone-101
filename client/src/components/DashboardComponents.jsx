@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HiArrowNarrowUp, HiOutlineUserGroup } from "react-icons/hi";
 import { useSelector } from "react-redux";
 
 const DashboardComponents = () => {
@@ -64,6 +65,71 @@ const DashboardComponents = () => {
         }
     }, [currentUser]);
 
-    return <div>DashboardComponents</div>;
+    return (
+        <div className="p-3 md:mx-auto">
+            <div className="flex-wrap flex gap-4 justify-start xl:justify-center">
+                <div className="flex flex-col p-3 bg-slate-50 dark:bg-slate-800 gap-4 md:w-48 xl:w-72 w-full rounded-md shadow-md">
+                    <div className="flex justify-between">
+                        <div className="">
+                            <h3 className="text-stone-700 dark:text-stone-300 text-md uppercase">
+                                Total Users
+                            </h3>
+                            <p className="text-2xl">{totalUsers}</p>
+                        </div>
+                        <HiOutlineUserGroup className="bg-amber-500 text-5xl rounded-full p-3 text-stone-50 dark:text-stone-800" />
+                    </div>
+                    <div className="flex gap-2 text-sm">
+                        <span className="text-amber-500 flex items-center">
+                            <HiArrowNarrowUp />
+                            {lastMonthUsers}
+                        </span>
+                        <div className="text-stone-700 dark:text-stone-300">
+                            Last month
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col p-3 bg-slate-50 dark:bg-slate-800 gap-4 md:w-48 xl:w-72 w-full rounded-md shadow-md">
+                    <div className="flex justify-between">
+                        <div className="">
+                            <h3 className="text-stone-700 dark:text-stone-300 text-md uppercase">
+                                Total Users
+                            </h3>
+                            <p className="text-2xl">{totalUsers}</p>
+                        </div>
+                        <HiOutlineUserGroup className="bg-amber-500 text-5xl rounded-full p-3 text-stone-50 dark:text-stone-800" />
+                    </div>
+                    <div className="flex gap-2 text-sm">
+                        <span className="text-amber-500 flex items-center">
+                            <HiArrowNarrowUp />
+                            {lastMonthUsers}
+                        </span>
+                        <div className="text-stone-700 dark:text-stone-300">
+                            Last month
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col p-3 bg-slate-50 dark:bg-slate-800 gap-4 md:w-48 xl:w-72 w-full rounded-md shadow-md">
+                    <div className="flex justify-between">
+                        <div className="">
+                            <h3 className="text-stone-700 dark:text-stone-300 text-md uppercase">
+                                Total Users
+                            </h3>
+                            <p className="text-2xl">{totalUsers}</p>
+                        </div>
+                        <HiOutlineUserGroup className="bg-amber-500 text-5xl rounded-full p-3 text-stone-50 dark:text-stone-800" />
+                    </div>
+                    <div className="flex gap-2 text-sm">
+                        <span className="text-amber-500 flex items-center">
+                            <HiArrowNarrowUp />
+                            {lastMonthUsers}
+                        </span>
+                        <div className="text-stone-700 dark:text-stone-300">
+                            Last month
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 export default DashboardComponents;
