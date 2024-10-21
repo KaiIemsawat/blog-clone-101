@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 
 import User from "../models/user.model.js";
+import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
@@ -9,15 +10,11 @@ export const signup = async (req, res, next) => {
     console.log(password);
 
     if (!username || !email || !password || email === "") {
-        return res.status(400).json({ message: "All fields are required" });
+        next(errorHandler(400, "All fields are required"));
     } else if (username.length < 3) {
-        return res
-            .status(400)
-            .json({ message: "Username minimum length is 3 characters" });
+        next(errorHandler(400, "Username minimum length is 3 characters"));
     } else if (password.length < 5) {
-        return res
-            .status(400)
-            .json({ message: "Password minimum length is 5 characters" });
+        next(errorHandler(400, "Password minimum length is 5 characters"));
     }
 
     const hashedPassword = bcryptjs.hashSync(password, 10);
