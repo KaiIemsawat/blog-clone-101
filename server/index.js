@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import userRoute from "./routes/user.route.js";
+import authRoute from "./routes/auth.route.js";
 
 dotenv.config();
 mongoose
@@ -11,7 +12,9 @@ mongoose
         console.log("🔗 CONNECTED TO MONGODB");
     })
     .catch((err) => console.error(err));
+
 const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT || 3301;
 
@@ -20,3 +23,4 @@ app.listen(PORT, () => {
 });
 
 app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
