@@ -12,7 +12,7 @@ const Header = () => {
         to="/"
         className="self-center whitespace-nowrap text-sm font-semibold sm:text-xl dark:text-[#eaeae]"
       >
-        <span className="rounded-lg bg-gradient-to-r from-indigo-600 via-purple-400 to-pink-500 px-2 py-1 text-white">
+        <span className="rounded-lg bg-gradient-to-r from-stone-600 via-gray-500 to-slate-400 px-2 py-1 text-white">
           Zukkii's
         </span>{" "}
         <span className="text-stone-600">blog</span>
@@ -33,8 +33,10 @@ const Header = () => {
           <FaMoon />
         </Button>
         <Link to="/sign-in">
-          <Button gradientDuoTone="purpleToPink" outline>
-            Sign In
+          <Button color="gray">
+            <span className="font-semibold text-slate-400 hover:text-slate-800 hover:underline">
+              Sign In
+            </span>
           </Button>
         </Link>
         <Navbar.Toggle />
