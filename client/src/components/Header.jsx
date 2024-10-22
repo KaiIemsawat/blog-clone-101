@@ -12,10 +12,10 @@ const Header = () => {
         to="/"
         className="self-center whitespace-nowrap text-sm font-semibold sm:text-xl dark:text-[#eaeae]"
       >
-        <span className="rounded-lg bg-gradient-to-r from-stone-600 via-gray-500 to-slate-400 px-2 py-1 text-white">
+        <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 text-white">
           Zukkii's
         </span>{" "}
-        <span className="text-stone-600">blog</span>
+        <span className="text-stone-500">blog</span>
       </Link>
       <form>
         <TextInput

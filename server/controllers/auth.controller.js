@@ -5,9 +5,6 @@ import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
-    console.log(username);
-    console.log(email);
-    console.log(password);
 
     if (!username || !email || !password || email === "") {
         next(errorHandler(400, "All fields are required"));
@@ -28,6 +25,6 @@ export const signup = async (req, res, next) => {
         await newUser.save();
         res.json("Successfully signup");
     } catch (error) {
-        next(error);
+        next(errorHandler(400, "Invalid credentials"));
     }
 };
