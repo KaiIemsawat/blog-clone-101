@@ -70,43 +70,48 @@ export default function SignUp() {
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <Label value="Username" />
-              <TextInput
+              <input
                 type="text"
                 placeholder="YourUsername"
                 id="username"
                 onChange={onChange}
+                className="w-full rounded-md border-none border-slate-300 placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2"
               />
             </div>
             <div>
               <Label value="Email" />
-              <TextInput
+              <input
                 type="email"
                 placeholder="your@email.com"
                 id="email"
                 onChange={onChange}
+                className="w-full rounded-md border-none border-slate-300 placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2"
               />
             </div>
             <div>
               <Label value="Password" />
-              <TextInput
+              <input
                 type="password"
                 placeholder="******"
                 id="password"
                 onChange={onChange}
+                className="w-full rounded-md border-none border-slate-300 placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2"
               />
             </div>
-            <Button color="gray" type="submit" disabled={loading}>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-md bg-stone-300 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline"
+            >
               {loading ? (
                 <>
                   <Spinner size="sm" />
                   <span className="pl-3">Loading</span>
                 </>
               ) : (
-                <span className="font-semibold text-slate-400 hover:text-slate-800 hover:underline">
-                  Sign Up
-                </span>
+                <span className="font-semibold">Sign Up</span>
               )}
-            </Button>
+            </button>
           </form>
           <div className="mt-4 flex justify-center gap-2 font-light text-stone-800">
             <span>Have an account? </span>

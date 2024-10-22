@@ -33,11 +33,9 @@ const Header = () => {
           <FaMoon />
         </Button>
         <Link to="/sign-in">
-          <Button color="gray">
-            <span className="font-semibold text-slate-400 hover:text-slate-800 hover:underline">
-              Sign In
-            </span>
-          </Button>
+          <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+            <span className="font-semibold">Sign In</span>
+          </button>
         </Link>
         <Navbar.Toggle />
       </div>
