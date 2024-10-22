@@ -88,6 +88,10 @@ export default function FooterComponent() {
             href="#"
             by="KaiIemsawat"
             year={new Date().getFullYear()}
+            onClick={(e) => {
+              (window.location.href = "mailto:kaiiemsawat@gmail.com"),
+                e.preventDefault();
+            }}
           />
           <div className="flex justify-center gap-4">
             <Footer.Icon href="#" icon={BsFacebook} />
