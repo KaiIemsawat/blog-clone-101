@@ -35,7 +35,7 @@ export default function SignUp() {
       const data = await res.json();
 
       if (res.ok) {
-        nav("/sign-in");
+        nav("/");
       } else if (!data.success) {
         setLoading(false);
         return setErrorMessage(data.message);

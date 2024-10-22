@@ -31,7 +31,28 @@ export const signup = async (req, res, next) => {
             password: hashedPassword,
         });
         await newUser.save();
-        res.json("Successfully signup");
+        // res.json("Successfully signup");
+
+        const validUser = await User.findOne({ email });
+        if (!validUser) {
+            return next(errorHandler(400, "Invalid credentials"));
+        }
+
+        const token = jwt.sign(
+            {
+                id: validUser._id,
+            },
+            process.env.JWT_SECRET
+        );
+
+        // Separate password from everything else
+        const { password: pass, ...rest } = validUser._doc;
+
+        res.status(200)
+            .cookie("access_token", token, {
+                httpOnly: true,
+            })
+            .json(rest);
     } catch (error) {
         next(errorHandler(400, "Invalid credentials"));
     }
