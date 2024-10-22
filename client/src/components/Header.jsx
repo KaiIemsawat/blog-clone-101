@@ -12,7 +12,7 @@ const Header = () => {
         to="/"
         className="self-center whitespace-nowrap text-sm font-semibold sm:text-xl dark:text-[#eaeae]"
       >
-        <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 text-white">
+        <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-white">
           Zukkii's
         </span>{" "}
         <span className="text-stone-500">blog</span>
@@ -32,11 +32,20 @@ const Header = () => {
         <Button className="hidden h-10 w-12 sm:inline" color="gray" pill>
           <FaMoon />
         </Button>
-        <Link to="/sign-in">
-          <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
-            <span className="font-semibold">Sign In</span>
-          </button>
-        </Link>
+        {path === "/sign-in" ? (
+          <Link to="/sign-up">
+            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+              <span className="font-semibold">Sign Up</span>
+            </button>
+          </Link>
+        ) : (
+          <Link to="/sign-in">
+            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+              <span className="font-semibold">Sign In</span>
+            </button>
+          </Link>
+        )}
+
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>

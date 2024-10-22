@@ -55,7 +55,7 @@ export default function SignUp() {
             to="/"
             className="self-center text-4xl font-semibold dark:text-[#eaeae]"
           >
-            <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 text-white">
+            <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-white">
               Zukkii's
             </span>
             <span className="text-stone-500">blog</span>
@@ -120,9 +120,9 @@ export default function SignUp() {
             </Link>
           </div>
           {errorMessage && (
-            <Alert className="mt-5 items-center" color="failure">
+            <p className="mt-5 w-full rounded-md bg-red-300 py-2 text-center text-red-800">
               {errorMessage}
-            </Alert>
+            </p>
           )}
         </div>
       </div>
