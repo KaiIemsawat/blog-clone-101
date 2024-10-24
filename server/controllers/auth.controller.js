@@ -124,6 +124,7 @@ export const google = async (req, res, next) => {
                 password: hashedPassword,
                 profilePicture: googlePhotoUrl,
             });
+
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.JWT_SECRET);
             const { password, ...rest } = user._doc;

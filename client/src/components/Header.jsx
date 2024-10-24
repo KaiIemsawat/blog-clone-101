@@ -1,10 +1,12 @@
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const { currentUser } = useSelector((state) => state.user);
 
   return (
     <Navbar className="border-b-2">
@@ -32,7 +34,33 @@ const Header = () => {
         <Button className="hidden h-10 w-12 sm:inline" color="gray" pill>
           <FaMoon />
         </Button>
-        {path === "/sign-in" ? (
+
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt="User" img={currentUser.profilePicture} rounded />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm font-semibold text-stone-600">
+                @{currentUser.username}
+              </span>
+              <span className="block truncate text-sm font-medium text-stone-500">
+                {currentUser.email}
+              </span>
+            </Dropdown.Header>
+            <Link
+              to={"/dashboard?tab=profile"}
+              className="text-sm font-medium text-stone-500 hover:text-stone-800 hover:underline"
+            >
+              <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        ) : path === "/sign-in" ? (
           <Link to="/sign-up">
             <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
               <span className="font-semibold">Sign Up</span>
@@ -45,6 +73,20 @@ const Header = () => {
             </button>
           </Link>
         )}
+
+        {/* {path === "/sign-in" ? (
+          <Link to="/sign-up">
+            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+              <span className="font-semibold">Sign Up</span>
+            </button>
+          </Link>
+        ) : (
+          <Link to="/sign-in">
+            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+              <span className="font-semibold">Sign In</span>
+            </button>
+          </Link>
+        )} */}
 
         <Navbar.Toggle />
       </div>
