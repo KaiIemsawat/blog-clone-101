@@ -9,6 +9,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
+import { data } from "autoprefixer";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -19,10 +20,7 @@ export default function SignIn() {
   const nav = useNavigate();
 
   const onChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value.trim(),
-    });
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
   const handleSubmit = async (e) => {
@@ -40,13 +38,14 @@ export default function SignIn() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
 
+      const data = await res.json();
+      if (!data.success) {
+        dispatch(signInFailure(data.message)); // 'data.message' refered to 'action.payload' in userSlice.js
+      }
       if (res.ok) {
         dispatch(signInSuccess(data)); // 'data' refered to 'action.payload' in userSlice.js
         nav("/");
-      } else if (!data.success) {
-        dispatch(signInFailure(data.message)); // 'data.message' refered to 'action.payload' in userSlice.js
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -73,7 +72,7 @@ export default function SignIn() {
         </div>
         {/* RIGHT */}
         <div className="flex-1">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <Label value="Email" />
               <input
@@ -108,8 +107,8 @@ export default function SignIn() {
                 <span className="font-semibold">Sign In</span>
               )}
             </button>
-            <OAuth />
           </form>
+          <OAuth />
           <div className="mt-4 flex justify-center gap-2 font-light text-stone-800">
             <span>Need an account? </span>
             <Link to="/sign-up" className="font-semibold hover:underline">

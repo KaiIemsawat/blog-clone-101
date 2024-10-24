@@ -12,11 +12,11 @@ import OAuth from "../components/OAuth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  // const [errorMessage, setErrorMessage] = useState(null);
-  // const [loading, setLoading] = useState(false);
-  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  // const { loading, error: errorMessage } = useSelector((state) => state.user);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const nav = useNavigate();
 
   const onChange = (e) => {
@@ -34,9 +34,9 @@ export default function SignUp() {
     }
 
     try {
-      // setLoading(true);
-      // setErrorMessage(null);
-      dispatch(signInStart());
+      setLoading(true);
+      setErrorMessage(null);
+      // dispatch(signInStart());
 
       const res = await fetch("/api/auth/signup", {
         method: "POST",
@@ -46,17 +46,17 @@ export default function SignUp() {
       const data = await res.json();
 
       if (res.ok) {
-        dispatch(signInSuccess(data));
+        // dispatch(signInSuccess(data));
         nav("/");
       } else if (!data.success) {
-        // setLoading(false);
-        // return setErrorMessage(data.message);
-        dispatch(signInFailure(data.message));
+        setLoading(false);
+        return setErrorMessage(data.message);
+        // dispatch(signInFailure(data.message));
       }
     } catch (error) {
-      // setErrorMessage(error.message);
-      // setLoading(false);
-      dispatch(signInFailure(error.message));
+      setErrorMessage(error.message);
+      setLoading(false);
+      // dispatch(signInFailure(error.message));
     }
   };
   return (

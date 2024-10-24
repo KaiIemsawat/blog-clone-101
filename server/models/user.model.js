@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema(
             required: true,
             minLength: [5, "Password minimum length is 5 characters"],
         },
+        profilePicture: {
+            type: String,
+            default:
+                "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg",
+        },
     },
     { timestamps: true }
 );
