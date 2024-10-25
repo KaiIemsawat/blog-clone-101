@@ -1,20 +1,24 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
 
   return (
-    <Navbar className="border-b-2">
+    <Navbar className="border-stone-200 bg-stone-100 dark:bg-stone-800 sm:py-8">
       <Link
         to="/"
-        className="self-center whitespace-nowrap text-sm font-semibold sm:text-xl dark:text-[#eaeae]"
+        className="self-center whitespace-nowrap text-sm font-semibold dark:text-[#eaeae] sm:text-xl"
       >
-        <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-white">
+        <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-slate-300">
           Zukkii's
         </span>{" "}
         <span className="text-stone-500">blog</span>
@@ -31,8 +35,13 @@ const Header = () => {
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">
-        <Button className="hidden h-10 w-12 sm:inline" color="gray" pill>
-          <FaMoon />
+        <Button
+          className="hidden h-10 w-12 sm:inline"
+          color="gray"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "light" ? <FaMoon /> : <FaSun />}
         </Button>
 
         {currentUser ? (
@@ -73,20 +82,6 @@ const Header = () => {
             </button>
           </Link>
         )}
-
-        {/* {path === "/sign-in" ? (
-          <Link to="/sign-up">
-            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
-              <span className="font-semibold">Sign Up</span>
-            </button>
-          </Link>
-        ) : (
-          <Link to="/sign-in">
-            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
-              <span className="font-semibold">Sign In</span>
-            </button>
-          </Link>
-        )} */}
 
         <Navbar.Toggle />
       </div>

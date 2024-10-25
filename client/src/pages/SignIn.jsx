@@ -53,19 +53,19 @@ export default function SignIn() {
   };
   return (
     <div className="mt-20 min-h-screen">
-      <div className="mx-auto flex max-w-3xl flex-col gap-6 rounded-lg bg-stone-100 p-12 md:flex-row dark:bg-stone-800">
+      <div className="mx-auto flex max-w-3xl flex-col gap-6 rounded-lg bg-stone-100 p-12 dark:bg-stone-800 md:flex-row">
         {/* LEFT */}
         <div className="flex-1">
           <Link
             to="/"
             className="self-center text-4xl font-semibold dark:text-[#eaeae]"
           >
-            <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-white">
+            <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-slate-300">
               Zukkii's
             </span>
             <span className="text-stone-500">blog</span>
           </Link>
-          <p className="mt-5 text-sm font-light text-stone-600 dark:text-stone-100">
+          <p className="mt-5 text-sm font-light text-stone-600 dark:text-stone-400">
             This is my demo project using MERN stack, styling with TailwindCSS.
             Users may create an account or using their Google acount.
           </p>
@@ -74,7 +74,7 @@ export default function SignIn() {
         <div className="flex-1">
           <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
-              <Label value="Email" />
+              <Label className="dark:text-slate-300" value="Email" />
               <input
                 type="email"
                 placeholder="your@email.com"
@@ -84,7 +84,7 @@ export default function SignIn() {
               />
             </div>
             <div>
-              <Label value="Password" />
+              <Label className="dark:text-slate-300" value="Password" />
               <input
                 type="password"
                 placeholder="******"
@@ -109,9 +109,12 @@ export default function SignIn() {
             </button>
           </form>
           <OAuth />
-          <div className="mt-4 flex justify-center gap-2 font-light text-stone-800">
+          <div className="mt-4 flex justify-center gap-2 font-light text-stone-800 dark:text-stone-400">
             <span>Need an account? </span>
-            <Link to="/sign-up" className="font-semibold hover:underline">
+            <Link
+              to="/sign-up"
+              className="font-semibold hover:underline dark:text-stone-300"
+            >
               Sign Up
             </Link>
           </div>

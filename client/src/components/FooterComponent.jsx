@@ -4,15 +4,18 @@ import { BsFacebook, BsInstagram, BsGithub, BsTwitterX } from "react-icons/bs";
 
 export default function FooterComponent() {
   return (
-    <Footer container className="bg-stone-100 px-12 shadow-none">
+    <Footer
+      container
+      className="bg-stone-100 px-12 shadow-none dark:bg-stone-800"
+    >
       <div className="mx-auto w-full max-w-7xl">
         <div className="justify-between sm:flex md:grid-cols-1">
           <div className="mt-5">
             <Link
               to="/"
-              className="self-center whitespace-nowrap text-sm font-semibold sm:text-xl dark:text-[#eaeae]"
+              className="self-center whitespace-nowrap text-sm font-semibold dark:text-[#eaeae] sm:text-xl"
             >
-              <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-white">
+              <span className="rounded-lg bg-gradient-to-tr from-stone-600 via-gray-500 to-slate-400 px-2 py-1 tracking-wider text-slate-300">
                 Zukkii's
               </span>{" "}
               <span className="text-stone-500">blog</span>
@@ -21,9 +24,10 @@ export default function FooterComponent() {
 
           <div className="grid grid-cols-2 gap-3 sm:mt-4 sm:grid-cols-3 sm:gap-6">
             <div className="my-6 sm:my-0">
-              <Footer.Title title="About" />
+              <Footer.Title className="dark:text-stone-300" title="About" />
               <Footer.LinkGroup col>
                 <Footer.Link
+                  className="dark:text-stone-400"
                   href="https://www.kai-portfolio.tech/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -31,6 +35,7 @@ export default function FooterComponent() {
                   Portfolio
                 </Footer.Link>
                 <Footer.Link
+                  className="dark:text-stone-400"
                   href="https://www.github.com/KaiIemsawat"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -38,6 +43,7 @@ export default function FooterComponent() {
                   GitHub
                 </Footer.Link>
                 <Footer.Link
+                  className="dark:text-stone-400"
                   href="https://www.linkedin.com/in/kaiiemsawat/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -45,6 +51,7 @@ export default function FooterComponent() {
                   LinkedIn
                 </Footer.Link>
                 <Footer.Link
+                  className="dark:text-stone-400"
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -58,23 +65,46 @@ export default function FooterComponent() {
               </Footer.LinkGroup>
             </div>
             <div className="my-6 sm:my-0">
-              <Footer.Title title="Follow Us" />
+              <Footer.Title className="dark:text-stone-300" title="Follow Us" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link
+                  className="dark:text-stone-400"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   placeholder
                 </Footer.Link>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link
+                  className="dark:text-stone-400"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   placeholder
                 </Footer.Link>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link
+                  className="dark:text-stone-400"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   placeholder
                 </Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div className="my-6 sm:my-0">
-              <Footer.Title title="Learn more" />
+              <Footer.Title
+                className="dark:text-stone-300"
+                title="Learn more"
+              />
               <Footer.LinkGroup col>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link
+                  className="dark:text-stone-400"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   placeholder
                 </Footer.Link>
               </Footer.LinkGroup>
