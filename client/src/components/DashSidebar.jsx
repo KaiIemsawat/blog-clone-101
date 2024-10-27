@@ -24,7 +24,7 @@ export default function DashSidebar() {
               label={"User"}
               labelColor="dark"
               icon={HiUser}
-              className={`${tab === "profile" && "bg-slate-300 text-stone-700 dark:bg-slate-500"}`}
+              className={`${tab === "profile" && "bg-slate-300 text-stone-700 dark:bg-slate-500"} duration-300 hover:ring-2 hover:ring-slate-400`}
             >
               Profile
             </Sidebar.Item>

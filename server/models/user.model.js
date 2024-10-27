@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
         profilePicture: {
             type: String,
             default:
-                "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg",
+                "https://t3.ftcdn.net/jpg/06/33/54/78/360_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg",
         },
     },
     { timestamps: true }
