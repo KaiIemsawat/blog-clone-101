@@ -33,7 +33,21 @@ export default function DashProfile() {
           placeholder="******"
           className="w-full rounded-md border-none border-slate-300 bg-stone-100 py-2 placeholder-stone-300 ring-1 ring-stone-200 focus:ring-slate-400 focus:ring-offset-2 dark:bg-stone-700 dark:placeholder-stone-500 dark:ring-stone-500"
         />
+        <button
+          className="w-full rounded-md bg-stone-300 py-2 text-slate-600 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline"
+          type="submit"
+        >
+          Update
+        </button>
       </form>
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:bg-amber-600 hover:text-slate-200 hover:underline">
+          Sign Out
+        </span>
+        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:bg-red-600 hover:text-slate-200 hover:underline">
+          Delete Account
+        </span>
+      </div>
     </div>
   );
 }
