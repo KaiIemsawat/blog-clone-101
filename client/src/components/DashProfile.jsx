@@ -1,18 +1,98 @@
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../Firebase";
 
 export default function DashProfile() {
   const { currentUser } = useSelector((state) => state.user);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [imageFileUploadingProgress, setImageFileUploadingProgress] =
+    useState(null);
+  const [imageFileUploadError, setImageFileUploadError] = useState(null);
+
+  console.log(imageFileUploadingProgress, imageFileUploadError);
+
+  const filePickerRef = useRef();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setImageFile(file);
+      setImageFileUrl(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage();
+    }
+  }, [imageFile]);
+
+  const uploadImage = async () => {
+    /* service firebase.storage {
+      match /b/{bucket}/o {
+        match /{allPaths=**} {
+          allow read;
+          allow write: if
+          request.resource.size < 2 * 1024 * 1024 &&
+          request.resource.contentType.matches('image/.*')
+        }
+      }
+    } */
+    const storage = getStorage(app); // app comes from Firebase.js
+    const fileName = new Date().getTime() + imageFile.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageFileUploadingProgress(progress.toFixed(0));
+      },
+      (error) => {
+        setImageFileUploadError(
+          "Could not upload image ('File might be to large')",
+        );
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setImageFileUrl(downloadUrl);
+        });
+      },
+    );
+  };
+
   return (
     <div className="mx-auto w-full max-w-lg p-3">
       <h1 className="my-7 text-center text-3xl font-semibold">Profile</h1>
       <form className="flex flex-col gap-4">
-        <div className="h-32 w-32 cursor-pointer self-center overflow-hidden rounded-full shadow-md">
+        {/* FILE INPUT / PROFILE IMAGE */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          ref={filePickerRef}
+          hidden
+        />
+        <div
+          className="h-32 w-32 cursor-pointer self-center overflow-hidden rounded-full shadow-md"
+          onClick={() => filePickerRef.current.click()}
+        >
           <img
-            src={currentUser.profilePicture}
+            src={imageFileUrl || currentUser.profilePicture}
             alt="User Profile"
-            className="h-full w-full rounded-full border-8 border-slate-300 object-cover"
+            className="h-full w-full rounded-full border-4 border-slate-300 object-cover dark:border-stone-400"
           />
         </div>
+
         <input
           type="text"
           id="username"
@@ -48,6 +128,11 @@ export default function DashProfile() {
           Delete Account
         </span>
       </div>
+      {imageFileUploadError && (
+        <p className="mt-5 w-full rounded-md bg-red-300 py-2 text-center text-red-800">
+          {imageFileUploadError}
+        </p>
+      )}
     </div>
   );
 }

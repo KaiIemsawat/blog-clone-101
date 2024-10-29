@@ -22,6 +22,7 @@ export default function DashSidebar() {
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
               label={"User"}
+              as="div"
               labelColor="dark"
               icon={HiUser}
               className={`${tab === "profile" && "bg-slate-300 text-stone-700 dark:bg-slate-500"} duration-300 hover:ring-2 hover:ring-slate-400`}
@@ -29,7 +30,11 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
-          <Sidebar.Item active icon={HiArrowSmRight} className="cursor-pointer">
+          <Sidebar.Item
+            active
+            icon={HiArrowSmRight}
+            className="cursor-pointer hover:bg-amber-600 hover:text-slate-200 hover:underline dark:hover:bg-amber-600"
+          >
             Sign Out
           </Sidebar.Item>
         </Sidebar.ItemGroup>
