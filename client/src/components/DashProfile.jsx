@@ -8,6 +8,9 @@ import {
 } from "firebase/storage";
 import { app } from "../Firebase";
 
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 export default function DashProfile() {
   const { currentUser } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
@@ -15,8 +18,6 @@ export default function DashProfile() {
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
     useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
-
-  console.log(imageFileUploadingProgress, imageFileUploadError);
 
   const filePickerRef = useRef();
 
@@ -46,6 +47,7 @@ export default function DashProfile() {
         }
       }
     } */
+    setImageFileUploadError(null);
     const storage = getStorage(app); // app comes from Firebase.js
     const fileName = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, fileName);
@@ -61,6 +63,9 @@ export default function DashProfile() {
         setImageFileUploadError(
           "Could not upload image ('File might be to large')",
         );
+        setImageFileUploadingProgress(null);
+        setImageFile(null);
+        setImageFileUrl(null);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
@@ -83,13 +88,32 @@ export default function DashProfile() {
           hidden
         />
         <div
-          className="h-32 w-32 cursor-pointer self-center overflow-hidden rounded-full shadow-md"
+          className="relative h-32 w-32 cursor-pointer self-center overflow-hidden rounded-full shadow-md"
           onClick={() => filePickerRef.current.click()}
         >
+          {imageFileUploadingProgress && (
+            <CircularProgressbar
+              value={imageFileUploadingProgress || 0}
+              text={`${imageFileUploadingProgress}%`}
+              strokeWidth={5}
+              styles={{
+                root: {
+                  width: "100%",
+                  height: "%100%",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                },
+                path: {
+                  stroke: `rgba(89, 93, 106, ${imageFileUploadingProgress / 100})`,
+                },
+              }}
+            />
+          )}
           <img
             src={imageFileUrl || currentUser.profilePicture}
             alt="User Profile"
-            className="h-full w-full rounded-full border-4 border-slate-300 object-cover dark:border-stone-400"
+            className={`h-full w-full rounded-full border-4 border-slate-300 object-cover dark:border-stone-400 ${imageFileUploadingProgress && imageFileUploadingProgress < 100 && "opacity-60"}`}
           />
         </div>
 
@@ -121,15 +145,15 @@ export default function DashProfile() {
         </button>
       </form>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:bg-amber-600 hover:text-slate-200 hover:underline">
+        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-amber-600 hover:underline hover:ring-2 hover:ring-amber-500">
           Sign Out
         </span>
-        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:bg-red-600 hover:text-slate-200 hover:underline">
+        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-red-700 hover:underline hover:ring-2 hover:ring-red-500">
           Delete Account
         </span>
       </div>
       {imageFileUploadError && (
-        <p className="mt-5 w-full rounded-md bg-red-300 py-2 text-center text-red-800">
+        <p className="mt-3 w-full rounded-md border border-red-800 bg-red-300 py-2 text-center text-red-800">
           {imageFileUploadError}
         </p>
       )}
