@@ -17,6 +17,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserrFailure,
+  signoutSuccess,
 } from "../redux/user/userSlice";
 import "react-circular-progressbar/dist/styles.css";
 import { Modal } from "flowbite-react";
@@ -158,6 +159,23 @@ export default function DashProfile() {
     }
   };
 
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <div className="mx-auto w-full max-w-lg p-3">
       <h1 className="my-7 text-center text-3xl font-semibold">Profile</h1>
@@ -235,7 +253,10 @@ export default function DashProfile() {
         </button>
       </form>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-amber-600 hover:underline hover:ring-2 hover:ring-amber-500">
+        <span
+          onClick={handleSignout}
+          className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-amber-600 hover:underline hover:ring-2 hover:ring-amber-500"
+        >
           Sign Out
         </span>
         <span
