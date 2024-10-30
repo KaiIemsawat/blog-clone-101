@@ -14,11 +14,16 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserrFailure,
 } from "../redux/user/userSlice";
 import "react-circular-progressbar/dist/styles.css";
+import { Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function DashProfile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
@@ -27,6 +32,7 @@ export default function DashProfile() {
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
 
   const filePickerRef = useRef();
@@ -131,6 +137,27 @@ export default function DashProfile() {
     }
   };
 
+  const handleDeleteUser = async () => {
+    setShowModal(false);
+    try {
+      dispatch(deleteUserStart());
+
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        dispatch(deleteUserrFailure(data.message));
+      } else {
+        dispatch(deleteUserSuccess(data));
+      }
+    } catch (error) {
+      dispatch(deleteUserrFailure(error.message));
+    }
+  };
+
   return (
     <div className="mx-auto w-full max-w-lg p-3">
       <h1 className="my-7 text-center text-3xl font-semibold">Profile</h1>
@@ -211,10 +238,15 @@ export default function DashProfile() {
         <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-amber-600 hover:underline hover:ring-2 hover:ring-amber-500">
           Sign Out
         </span>
-        <span className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-red-700 hover:underline hover:ring-2 hover:ring-red-500">
+        <span
+          onClick={() => setShowModal(true)}
+          className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-red-700 hover:underline hover:ring-2 hover:ring-red-500"
+        >
           Delete Account
         </span>
       </div>
+
+      {/* MESSAGES */}
       {imageFileUploadError && (
         <p className="mt-3 w-full rounded-md border border-red-800 bg-red-300 py-2 text-center text-red-800">
           {imageFileUploadError}
@@ -225,11 +257,48 @@ export default function DashProfile() {
           {updateUserError}
         </p>
       )}
+      {error && (
+        <p className="mt-3 w-full rounded-md border border-red-800 bg-red-300 py-2 text-center text-red-800">
+          {error}
+        </p>
+      )}
       {updateUserSuccess && (
         <p className="mt-3 w-full rounded-md border border-green-400 bg-green-300 py-2 text-center text-green-600">
           {updateUserSuccess}
         </p>
       )}
+
+      {/* MODAL */}
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-slate-400" />
+            <h3 className="mb-5 text-lg text-amber-600">
+              Deleting account confirmation
+            </h3>
+            <div className="mb-4 flex gap-3">
+              <button
+                onClick={handleDeleteUser}
+                className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-red-700 hover:underline hover:ring-2 hover:ring-red-500"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-amber-600 hover:underline hover:ring-2 hover:ring-amber-500"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
