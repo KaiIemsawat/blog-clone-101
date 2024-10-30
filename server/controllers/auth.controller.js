@@ -12,9 +12,15 @@ export const signup = async (req, res, next) => {
 
     if (!username || !email || !password || email === "") {
         return next(errorHandler(400, "All fields are required"));
-    } else if (username.length < 3) {
+    } else if (username.length < 3 || username.length > 25) {
         return next(
-            errorHandler(400, "Username minimum length is 3 characters")
+            errorHandler(400, "Username must be between 3 to 25 characters")
+        );
+    } else if (username.includes(" ")) {
+        return next(errorHandler(400, "Username cannot contain space"));
+    } else if (username.match(/^[a-zA-Z0-9]+$/)) {
+        return next(
+            errorHandler(400, "Username can only contain laters and numbers")
         );
     } else if (password.length < 5) {
         return next(
