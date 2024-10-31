@@ -18,6 +18,8 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
 
+  console.log(formData);
+
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -68,12 +70,18 @@ export default function CreatePost() {
             placeholder="Title"
             required
             id="title"
-            className="w-full flex-1 rounded-tl-md border-none placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2 dark:bg-stone-500"
+            className="w-full flex-1 rounded-md border-none placeholder-slate-300 hover:ring-2 hover:ring-stone-300 focus:ring-slate-400 focus:ring-offset-2 dark:bg-stone-500"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
           <select
             name=""
             id=""
-            className="cursor-pointer rounded-tr-md border-2 border-slate-300 hover:underline focus:border-none focus:ring-slate-400 focus:ring-offset-2 dark:border-stone-400 dark:bg-stone-500"
+            className="cursor-pointer rounded-md border-2 border-slate-300 hover:underline focus:border-none focus:ring-slate-400 focus:ring-offset-2 dark:border-stone-400 dark:bg-stone-500"
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
           >
             <option value="uncategorized">Select a Category</option>
             <option value="javascript">JavaScript</option>
@@ -129,10 +137,13 @@ export default function CreatePost() {
           placeholder="Write something..."
           className="mb-11 h-72"
           required
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+          }}
         />
         <button
           type="submit"
-          className="w-full rounded-b-md bg-stone-400 py-3 font-semibold text-slate-800 duration-300 hover:bg-stone-700 hover:text-slate-300 hover:underline dark:hover:bg-stone-300 dark:hover:text-slate-900"
+          className="w-full rounded-md bg-stone-400 py-3 font-semibold text-slate-800 duration-300 hover:bg-stone-700 hover:text-slate-300 hover:underline dark:hover:bg-stone-300 dark:hover:text-slate-900"
         >
           Publish
         </button>
