@@ -255,7 +255,7 @@ export default function DashProfile() {
         </button>
       </form>
       {currentUser.isAdmin && (
-        <Link to={"create-post"}>
+        <Link to={"/create-post"}>
           <button
             className="mt-3 w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-indigo-600 hover:underline hover:ring-2 hover:ring-indigo-500"
             type="button"

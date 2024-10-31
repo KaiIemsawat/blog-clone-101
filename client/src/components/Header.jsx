@@ -89,7 +89,7 @@ const Header = () => {
           </Dropdown>
         ) : path === "/sign-in" ? (
           <Link to="/sign-up">
-            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline">
+            <button className="rounded-md bg-stone-300 px-4 py-2 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline dark:bg-stone-600 dark:hover:bg-stone-500">
               <span className="font-semibold">Sign Up</span>
             </button>
           </Link>
