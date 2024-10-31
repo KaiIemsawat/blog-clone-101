@@ -46,7 +46,7 @@ export default function DashSidebar() {
               as="div"
               labelColor="dark"
               icon={HiUser}
-              className={`${tab === "profile" && "bg-slate-300 text-stone-700 dark:bg-slate-500"} duration-300 hover:ring-2 hover:ring-slate-400`}
+              className={`${tab === "profile" && "bg-stone-300 text-stone-700 dark:bg-stone-500"} duration-300 hover:ring-2 hover:ring-slate-400`}
             >
               Profile
             </Sidebar.Item>
@@ -55,7 +55,7 @@ export default function DashSidebar() {
             active
             icon={HiArrowSmRight}
             onClick={handleSignout}
-            className="cursor-pointer hover:bg-amber-600 hover:text-slate-200 hover:underline dark:hover:bg-amber-600"
+            className="cursor-pointer duration-300 hover:border hover:border-amber-600 hover:text-slate-700 hover:underline dark:hover:border dark:hover:border-amber-600"
           >
             Sign Out
           </Sidebar.Item>
