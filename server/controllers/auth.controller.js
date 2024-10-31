@@ -18,7 +18,7 @@ export const signup = async (req, res, next) => {
         );
     } else if (username.includes(" ")) {
         return next(errorHandler(400, "Username cannot contain space"));
-    } else if (username.match(/^[a-zA-Z0-9]+$/)) {
+    } else if (!username.match(/^[a-zA-Z0-9]+$/)) {
         return next(
             errorHandler(400, "Username can only contain laters and numbers")
         );

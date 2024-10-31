@@ -14,12 +14,12 @@ export default function CreatePost() {
             placeholder="Title"
             required
             id="title"
-            className="w-full flex-1 rounded-md border-none placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2 dark:bg-stone-500"
+            className="w-full flex-1 rounded-tl-md border-none placeholder-slate-300 focus:ring-slate-400 focus:ring-offset-2 dark:bg-stone-500"
           />
           <select
             name=""
             id=""
-            className="cursor-pointer rounded-md border-2 border-slate-300 hover:underline focus:border-none focus:ring-slate-400 focus:ring-offset-2 dark:border-stone-400 dark:bg-stone-500"
+            className="cursor-pointer rounded-tr-md border-2 border-slate-300 hover:underline focus:border-none focus:ring-slate-400 focus:ring-offset-2 dark:border-stone-400 dark:bg-stone-500"
           >
             <option value="uncategorized">Select a Category</option>
             <option value="javascript">JavaScript</option>
@@ -27,7 +27,7 @@ export default function CreatePost() {
             <option value="nextjs">NextJs</option>
           </select>
         </div>
-        <div className="flex items-center justify-between gap-4 rounded-md border-2 border-stone-300 p-3 dark:border-stone-400">
+        <div className="flex items-center justify-between gap-4 border-2 border-stone-300 p-3 dark:border-stone-400">
           <input
             type="file"
             accept="image/*"
@@ -43,11 +43,12 @@ export default function CreatePost() {
         <ReactQuill
           theme="snow"
           placeholder="Write something..."
-          className="mb-12 h-72"
+          className="mb-11 h-72"
+          required
         />
         <button
           type="submit"
-          className="w-full rounded-md bg-stone-400 py-2 font-semibold text-slate-800 duration-300 hover:bg-stone-700 hover:text-slate-300 hover:underline dark:hover:bg-stone-300 dark:hover:text-slate-900"
+          className="w-full rounded-b-md bg-stone-400 py-3 font-semibold text-slate-800 duration-300 hover:bg-stone-700 hover:text-slate-300 hover:underline dark:hover:bg-stone-300 dark:hover:text-slate-900"
         >
           Publish
         </button>
