@@ -9,6 +9,7 @@ import {
 import { app } from "../Firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import {
   updateStart,
@@ -24,7 +25,7 @@ import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function DashProfile() {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
@@ -248,10 +249,21 @@ export default function DashProfile() {
         <button
           className="w-full rounded-md bg-stone-300 py-2 text-slate-600 duration-300 hover:bg-stone-600 hover:text-slate-200 hover:underline"
           type="submit"
+          disabled={loading || imageFileUploading}
         >
-          Update
+          {loading ? "Loading..." : "Update"}
         </button>
       </form>
+      {currentUser.isAdmin && (
+        <Link to={"create-post"}>
+          <button
+            className="mt-3 w-full cursor-pointer rounded-md bg-stone-200 py-2 text-center text-slate-400 duration-300 hover:text-indigo-600 hover:underline hover:ring-2 hover:ring-indigo-500"
+            type="button"
+          >
+            Create Post
+          </button>
+        </Link>
+      )}
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
         <span
           onClick={handleSignout}
