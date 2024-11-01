@@ -8,6 +8,7 @@ import {
 } from "firebase/storage";
 import { app } from "../Firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useNavigate } from "react-router-dom";
 
 import "react-quill/dist/quill.snow.css";
 import "react-circular-progressbar/dist/styles.css";
@@ -17,8 +18,9 @@ export default function CreatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
 
-  console.log(formData);
+  const nav = useNavigate();
 
   const handleUploadImage = async () => {
     try {
@@ -58,12 +60,38 @@ export default function CreatePost() {
       console.error(error);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      if (res.ok) {
+        setPublishError(null);
+        nav(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+    }
+  };
   return (
     <div className="mx-auto my-4 min-h-screen max-w-3xl rounded-md bg-stone-100 p-3 dark:bg-stone-800">
       <h1 className="my-7 text-center text-3xl font-semibold text-slate-700 dark:text-slate-300">
         Create a post
       </h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col justify-between gap-4 sm:flex-row">
           <input
             type="text"
@@ -148,6 +176,11 @@ export default function CreatePost() {
           Publish
         </button>
       </form>
+      {publishError && (
+        <p className="mt-4 w-full rounded-md bg-red-300 py-3 text-center text-red-800">
+          {publishError}
+        </p>
+      )}
     </div>
   );
 }
