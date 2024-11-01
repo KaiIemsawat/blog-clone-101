@@ -1,14 +1,15 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiArrowSmRight, HiUser } from "react-icons/hi";
+import { HiArrowSmRight, HiDocumentText, HiUser } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { signoutSuccess } from "../redux/user/userSlice";
 
 export default function DashSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
   const [tab, setTab] = useState("");
 
   useEffect(() => {
@@ -39,18 +40,30 @@ export default function DashSidebar() {
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
-        <Sidebar.ItemGroup>
+        <Sidebar.ItemGroup className="flex flex-col gap-1">
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
-              label={"User"}
+              label={currentUser.isAdmin ? "Admin" : "User"}
               as="div"
               labelColor="dark"
               icon={HiUser}
-              className={`${tab === "profile" && "bg-stone-300 text-stone-700 dark:bg-stone-500"} duration-300 hover:ring-2 hover:ring-slate-400`}
+              className={`${tab === "profile" ? "border-2 border-stone-500 bg-slate-300 font-semibold text-stone-700 dark:border-stone-400 dark:bg-slate-500 dark:text-stone-300" : "bg-slate-200 dark:bg-slate-600"} duration-300 hover:underline hover:ring-2 hover:ring-slate-400`}
             >
               Profile
             </Sidebar.Item>
           </Link>
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=posts">
+              <Sidebar.Item
+                icon={HiDocumentText}
+                as="div"
+                className={`${tab === "posts" ? "border-2 border-stone-500 bg-slate-300 font-semibold text-stone-700 dark:border-stone-400 dark:bg-slate-500 dark:text-stone-300" : "bg-slate-200 dark:bg-slate-600"} duration-300 hover:underline hover:ring-2 hover:ring-slate-400`}
+              >
+                Posts
+              </Sidebar.Item>
+            </Link>
+          )}
+
           <Sidebar.Item
             active
             icon={HiArrowSmRight}
